@@ -18,6 +18,7 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
+//    tạo khách hàng mới
     @GetMapping("/create-customer")
     public ModelAndView showCreateForm(){
         ModelAndView modelAndView = new ModelAndView("/create");
@@ -34,6 +35,7 @@ public class CustomerController {
         return modelAndView;
     }
 
+//    hiển thị danh sách khách hàng
     @GetMapping("/customers")
     public ModelAndView listCustomers(){
         List<Customer> customers = customerService.findAll();
@@ -42,6 +44,7 @@ public class CustomerController {
         return modelAndView;
     }
 
+//    chỉnh sửa thông tin khách hàng
     @GetMapping("/edit-customer/{id}")
     public ModelAndView showEditForm(@PathVariable Long id){
         Customer customer = customerService.findById(id);
@@ -63,5 +66,26 @@ public class CustomerController {
         modelAndView.addObject("customer", customer);
         modelAndView.addObject("message", "Customer updated successfully");
         return modelAndView;
+    }
+
+//    xóa 1 khách hàng
+    @GetMapping("/delete-customer/{id}")
+    public ModelAndView showDeleteForm(@PathVariable Long id){
+        Customer customer = customerService.findById(id);
+        if(customer != null) {
+            ModelAndView modelAndView = new ModelAndView("/customer/delete");
+            modelAndView.addObject("customer", customer);
+            return modelAndView;
+
+        }else {
+            ModelAndView modelAndView = new ModelAndView("/error.404");
+            return modelAndView;
+        }
+    }
+
+    @PostMapping("/delete-customer")
+    public String deleteCustomer(@ModelAttribute("customer") Customer customer){
+        customerService.remove(customer.getId());
+        return "redirect:customers";
     }
 }
