@@ -18,16 +18,16 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-//    tạo khách hàng mới
+    //    tạo khách hàng mới
     @GetMapping("/create-customer")
-    public ModelAndView showCreateForm(){
+    public ModelAndView showCreateForm() {
         ModelAndView modelAndView = new ModelAndView("/create");
         modelAndView.addObject("customer", new Customer());
         return modelAndView;
     }
 
     @PostMapping("/create-customer")
-    public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer){
+    public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer) {
         customerService.save(customer);
         ModelAndView modelAndView = new ModelAndView("/create");
         modelAndView.addObject("customer", new Customer());
@@ -35,32 +35,32 @@ public class CustomerController {
         return modelAndView;
     }
 
-//    hiển thị danh sách khách hàng
+    //    hiển thị danh sách khách hàng
     @GetMapping("/customers")
-    public ModelAndView listCustomers(){
+    public ModelAndView listCustomers() {
         List<Customer> customers = customerService.findAll();
         ModelAndView modelAndView = new ModelAndView("/list");
         modelAndView.addObject("customers", customers);
         return modelAndView;
     }
 
-//    chỉnh sửa thông tin khách hàng
+    //    chỉnh sửa thông tin khách hàng
     @GetMapping("/edit-customer/{id}")
-    public ModelAndView showEditForm(@PathVariable Long id){
+    public ModelAndView showEditForm(@PathVariable Long id) {
         Customer customer = customerService.findById(id);
-        if(customer != null) {
+        if (customer != null) {
             ModelAndView modelAndView = new ModelAndView("/customer/edit");
             modelAndView.addObject("customer", customer);
             return modelAndView;
 
-        }else {
+        } else {
             ModelAndView modelAndView = new ModelAndView("/error.404");
             return modelAndView;
         }
     }
 
     @PostMapping("/edit-customer")
-    public ModelAndView updateCustomer(@ModelAttribute("customer") Customer customer){
+    public ModelAndView updateCustomer(@ModelAttribute("customer") Customer customer) {
         customerService.save(customer);
         ModelAndView modelAndView = new ModelAndView("/customer/edit");
         modelAndView.addObject("customer", customer);
@@ -68,23 +68,23 @@ public class CustomerController {
         return modelAndView;
     }
 
-//    xóa 1 khách hàng
+    //    xóa 1 khách hàng
     @GetMapping("/delete-customer/{id}")
-    public ModelAndView showDeleteForm(@PathVariable Long id){
+    public ModelAndView showDeleteForm(@PathVariable Long id) {
         Customer customer = customerService.findById(id);
-        if(customer != null) {
+        if (customer != null) {
             ModelAndView modelAndView = new ModelAndView("/customer/delete");
             modelAndView.addObject("customer", customer);
             return modelAndView;
 
-        }else {
+        } else {
             ModelAndView modelAndView = new ModelAndView("/error.404");
             return modelAndView;
         }
     }
 
     @PostMapping("/delete-customer")
-    public String deleteCustomer(@ModelAttribute("customer") Customer customer){
+    public String deleteCustomer(@ModelAttribute("customer") Customer customer) {
         customerService.remove(customer.getId());
         return "redirect:customers";
     }
