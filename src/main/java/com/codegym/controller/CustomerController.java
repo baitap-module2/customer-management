@@ -49,7 +49,7 @@ public class CustomerController {
     public ModelAndView showEditForm(@PathVariable Long id) {
         Customer customer = customerService.findById(id);
         if (customer != null) {
-            ModelAndView modelAndView = new ModelAndView("/customer/edit");
+            ModelAndView modelAndView = new ModelAndView("/edit");
             modelAndView.addObject("customer", customer);
             return modelAndView;
 
@@ -62,7 +62,7 @@ public class CustomerController {
     @PostMapping("/edit-customer")
     public ModelAndView updateCustomer(@ModelAttribute("customer") Customer customer) {
         customerService.save(customer);
-        ModelAndView modelAndView = new ModelAndView("/customer/edit");
+        ModelAndView modelAndView = new ModelAndView("/edit");
         modelAndView.addObject("customer", customer);
         modelAndView.addObject("message", "Customer updated successfully");
         return modelAndView;
@@ -73,7 +73,7 @@ public class CustomerController {
     public ModelAndView showDeleteForm(@PathVariable Long id) {
         Customer customer = customerService.findById(id);
         if (customer != null) {
-            ModelAndView modelAndView = new ModelAndView("/customer/delete");
+            ModelAndView modelAndView = new ModelAndView("/delete");
             modelAndView.addObject("customer", customer);
             return modelAndView;
 
