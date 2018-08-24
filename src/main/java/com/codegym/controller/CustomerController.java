@@ -1,13 +1,43 @@
 package com.codegym.controller;
 
+import com.codegym.model.Customer;
+import com.codegym.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-@Controller("/")
+import java.util.List;
+
+@Controller
 public class CustomerController {
-    @GetMapping("/")
-    public String showForm(Model model) {
-        return "index";
+    @Autowired
+    private CustomerService customerService;
+
+    @GetMapping("/create-customer")
+    public ModelAndView showCreateForm(){
+        ModelAndView modelAndView = new ModelAndView("/create");
+        modelAndView.addObject("customer", new Customer());
+        return modelAndView;
+    }
+
+    @PostMapping("/create-customer")
+    public ModelAndView saveCustomer(@ModelAttribute("customer") Customer customer){
+        customerService.save(customer);
+        ModelAndView modelAndView = new ModelAndView("/create");
+        modelAndView.addObject("customer", new Customer());
+        modelAndView.addObject("message", "New customer created successfully");
+        return modelAndView;
+    }
+
+    @GetMapping("/customers")
+    public ModelAndView listCustomers(){
+        List<Customer> customers = customerService.findAll();
+        ModelAndView modelAndView = new ModelAndView("/list");
+        modelAndView.addObject("customers", customers);
+        return modelAndView;
     }
 }
